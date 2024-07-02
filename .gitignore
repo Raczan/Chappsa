@@ -1,0 +1,16 @@
+# Flask related
+venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# IDE files (if using a specific IDE)
+.vscode/
+*.idea/
+
+# Local configuration files
+instance/
+*.log
+
