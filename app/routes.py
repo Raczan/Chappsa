@@ -4,7 +4,7 @@ import sqlite3
 app = Flask(__name__)
 
 # Configurar la conexión a la base de datos SQLite
-DATABASE = 'database.db'
+DATABASE = 'test_db.db'
 
 def connect_db():
     return sqlite3.connect(DATABASE)
@@ -25,6 +25,8 @@ def users():
     # Convertir los resultados a un formato JSON
     users_json = [{'id': user[0], 'username': user[1], 'email': user[2]} for user in users]
     return jsonify(users_json)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
