@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h2>Registro de Nuevo Usuario</h2>
-        <form action="{{ url_for('submit_user') }}" method="post">
+        <form action="{{ url_for('submit_user') }}" method="post"  onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="name">Nombre:</label>
                 <input type="text" id="name" name="name" required>
@@ -19,7 +19,9 @@
                 <input type="email" id="email" name="email" required>
             </div>
             <button type="submit">Agregar Usuario</button>
+            <div id="error-msg" class="error"></div>
         </form>
     </div>
+    <script src="static/logic.js"></script>
 </body>
 </html>

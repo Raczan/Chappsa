@@ -1,31 +1,45 @@
-from flask import Flask, jsonify
-import sqlite3
+from flask import Flask, render_template, request, redirect, url_for
+import mysql.connector
 
 app = Flask(__name__)
 
-# Configurar la conexión a la base de datos SQLite
-DATABASE = 'test_db.db'
+# Configuración de la conexión a MySQL
+db_config = {
+    'host': 'localhost',
+    'user': 'practicas',
+    'password': 'practicas',
+    'database': 'test_db',
+}
 
-def connect_db():
-    return sqlite3.connect(DATABASE)
+# Función para conectar y obtener una conexión a MySQL
+def get_db_connection():
+    return mysql.connector.connect(**db_config)
 
-# Función para obtener todos los usuarios
-def get_users():
-    con = connect_db()
-    cur = con.cursor()
-    cur.execute('SELECT * FROM users')
-    users = cur.fetchall()
-    con.close()
-    return users
+# Ruta principal para mostrar el formulario
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-# Ruta para obtener todos los usuarios en formato JSON
-@app.route('/users', methods=['GET'])
-def users():
-    users = get_users()
-    # Convertir los resultados a un formato JSON
-    users_json = [{'id': user[0], 'username': user[1], 'email': user[2]} for user in users]
-    return jsonify(users_json)
+# Ruta para manejar el envío del formulario
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    name = request.form['name']
+    email = request.form['email']
 
+    # Conectar a la base de datos
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Insertar el nuevo usuario en la tabla users
+    sql = "INSERT INTO users (name, email) VALUES (%s, %s)"
+    val = (name, email)
+    cursor.execute(sql, val)
+
+    # Confirmar la transacción y cerrar la conexión
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

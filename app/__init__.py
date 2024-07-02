@@ -12,9 +12,7 @@ def index():
 def submit_user():
     name = request.form.get('name')
     email = request.form.get('email')
-    
-    # Aquí puedes guardar los datos en la base de datos o realizar otras acciones
-    
+        
     return f'Usuario agregado: {name}, {email}'
 
 if __name__ == '__main__':
